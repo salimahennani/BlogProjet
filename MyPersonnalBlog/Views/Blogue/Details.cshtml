@@ -1,0 +1,31 @@
+﻿@model MyPersonnalBlog.Models.BlogPost
+@{
+    ViewBag.Title = "New Post";
+    var tags = (IList<MyPersonnalBlog.Models.Tag>)ViewBag.Tags;
+    var selectedTags = Model.BlogTags.Select(d => d.TagId).ToArray();
+}
+
+<h2>Create new blog post</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    @Html.LabelFor(d => d.Title,"Titre")
+    @Html.TextBoxFor(d => d.Title, new { @Class = "form-control", placeholder = "The headline goes here...",required = "" })
+    <br />
+    @Html.Label("Tags")
+    <select name="Tags" id="Tags" class="form-control" multiple>
+        @foreach(var tag in tags)
+        {
+            <option value="@tag.Id" @(selectedTags.Any() && selectedTags.Contains(tag.Id) ? "selected" : "")>@tag.Nom</option>
+        }
+    </select>
+    <br />
+    @Html.LabelFor(d => d.Content,"Contenu")
+    @Html.TextAreaFor(d => d.Content, new { @Class = "form-control", style = "height:300px;", placeholder = "What would you like to write?", required = "" })
+
+    <br />
+    <input type="submit" style="width: auto; font-weight: 600;" value="Post" />
+    <br />
+}
+
